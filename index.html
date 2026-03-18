@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Swasth Mandal 2.0 — Investor Overview</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+label{outline:none;-webkit-tap-highlight-color:transparent}
+:root{
+  --ink:#18140F; --ink2:#3D3529; --ink3:#6B5E50; --ink4:#A89880;
+  --cream:#FAF7F2; --cream2:#F2EDE4; --cream3:#E5DDD3;
+  --saffron:#C96A2A; --saffron-mid:#E07B39; --saffron-pale:#FBF0E8;
+  --green:#1E5C42; --green-mid:#2D6A4F; --green-pale:#EBF4EF;
+  --white:#FFFFFF;
+  --serif:'Playfair Display',serif;
+  --body:'IBM Plex Sans',sans-serif;
+  --mono:'IBM Plex Mono',monospace;
+  --r:4px; --rl:12px;
+  --nav-h:64px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--ink);font-family:var(--body);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* ── PROGRESS ── */
+.progress{position:fixed;top:0;left:0;height:2px;background:var(--saffron);z-index:600;width:0%;transition:width .1s linear}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:400;height:var(--nav-h);padding:0 5vw;display:flex;align-items:center;justify-content:space-between;background:rgba(250,247,242,.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--cream3)}
+.nav-logo{font-family:var(--serif);font-size:1rem;font-weight:700;color:var(--ink);white-space:nowrap}
+.nav-logo span{color:var(--saffron)}
+.nav-tabs{display:flex;align-items:center;gap:2px}
+.nav-tab{background:none;border:none;font-family:var(--body);font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;font-weight:500;color:var(--ink4);padding:8px 16px;border-radius:var(--r);cursor:pointer;transition:all .2s;position:relative}
+.nav-tab::after{content:'';position:absolute;bottom:0;left:16px;right:16px;height:2px;background:var(--saffron);transform:scaleX(0);transition:transform .2s}
+.nav-tab.active{color:var(--ink)}
+.nav-tab.active::after{transform:scaleX(1)}
+.nav-tab:hover:not(.active){color:var(--ink3)}
+.nav-cta{background:var(--ink);color:var(--cream);padding:9px 20px;border-radius:var(--r);font-family:var(--body);font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;font-weight:600;text-decoration:none;transition:background .2s;margin-left:12px;white-space:nowrap}
+.nav-cta:hover{background:var(--saffron)}
+
+/* ── DESKTOP: panel layout ── */
+@media(min-width:961px){
+  .panels-wrap{position:fixed;top:var(--nav-h);left:0;right:0;bottom:0;overflow:hidden}
+  .panel{position:absolute;inset:0;overflow-y:auto;opacity:0;pointer-events:none;transform:translateY(16px);transition:opacity .35s ease,transform .35s ease}
+  .panel.active{opacity:1;pointer-events:all;transform:translateY(0)}
+  .progress{display:none}
+}
+
+/* ── MOBILE: normal scroll ── */
+@media(max-width:960px){
+  .panels-wrap{margin-top:var(--nav-h)}
+  .panel{opacity:1;transform:none;pointer-events:all}
+  .nav-tab{display:none}
+  .nav-tab[data-panel="home"]{display:block}
+  body.mobile-scrolling .panel{display:block!important}
+}
+
+/* ── SHARED SECTION STYLES ── */
+.section-inner{padding:52px 5vw 80px;min-height:calc(100vh - var(--nav-h));display:flex;flex-direction:column;justify-content:flex-start}
+.section-inner.dark{background:var(--ink)}
+.section-inner.mid{background:var(--cream2)}
+.section-inner.light{background:var(--cream)}
+
+.s-label{font-family:var(--mono);font-size:.63rem;letter-spacing:.2em;text-transform:uppercase;color:var(--saffron);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+.s-label::before{content:'';width:18px;height:1px;background:var(--saffron)}
+.s-label.light-lbl{color:rgba(250,247,242,.35)}
+.s-label.light-lbl::before{background:rgba(250,247,242,.35)}
+h2{font-family:var(--serif);font-size:clamp(1.8rem,2.8vw,2.6rem);font-weight:700;line-height:1.12;letter-spacing:-.02em;margin-bottom:12px}
+h2 em{font-style:italic;color:var(--saffron)}
+h2 em.green-em{color:var(--green)}
+h2.light-h{color:var(--cream)}
+h2.light-h em{color:var(--saffron-mid)}
+.s-intro{font-size:1rem;line-height:1.78;color:var(--ink3);max-width:580px;font-weight:300;margin-bottom:0}
+.s-intro.light-p{color:rgba(250,247,242,.44)}
+
+/* panel navigation arrows */
+.panel-nav{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:32px;border-top:1px solid var(--cream3)}
+.panel-nav.dark-nav{border-top-color:rgba(255,255,255,.06)}
+.pn-back,.pn-next{display:inline-flex;align-items:center;gap:8px;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;text-decoration:none;cursor:pointer;background:none;border:none;font-family:var(--body);padding:10px 0;transition:color .2s}
+.pn-back{color:var(--ink4)}
+.pn-back:hover{color:var(--ink)}
+.pn-next{color:var(--ink);background:var(--ink);color:var(--cream);padding:10px 22px;border-radius:var(--r);transition:background .2s}
+.pn-next:hover{background:var(--saffron)}
+.pn-next.saffron-btn{background:var(--saffron)}
+.pn-next.saffron-btn:hover{background:var(--saffron-mid)}
+.dark-nav .pn-back{color:rgba(250,247,242,.3)}
+.dark-nav .pn-back:hover{color:rgba(250,247,242,.7)}
+.dark-nav .pn-next{background:var(--saffron);color:var(--white)}
+.dark-nav .pn-next:hover{background:var(--saffron-mid)}
+.pn-spacer{flex:1}
+
+/* ══════════════════════════════
+   PANEL 0 — HERO
+══════════════════════════════ */
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;flex:1;margin-top:20px}
+.hero-grid-right{position:relative}
+.kicker{font-family:var(--mono);font-size:.67rem;letter-spacing:.18em;text-transform:uppercase;color:var(--saffron);margin-bottom:24px;display:flex;align-items:center;gap:12px}
+.kicker::before{content:'';width:28px;height:1px;background:var(--saffron)}
+h1{font-family:var(--serif);font-size:clamp(2.4rem,3.8vw,3.6rem);line-height:1.08;font-weight:900;letter-spacing:-.02em;margin-bottom:20px}
+h1 em{font-style:italic;color:var(--saffron)}
+.hero-sub{font-size:1rem;line-height:1.78;color:var(--ink3);max-width:460px;margin-bottom:36px;font-weight:300}
+.btns{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.btn-dark{background:var(--ink);color:var(--cream);padding:13px 26px;border-radius:var(--r);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;text-decoration:none;transition:background .2s;display:inline-flex;align-items:center;gap:6px}
+.btn-dark:hover{background:var(--saffron)}
+.btn-ghost{color:var(--ink);border-bottom:1px solid var(--ink3);padding-bottom:1px;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;text-decoration:none;transition:color .2s;display:inline-flex;align-items:center;gap:6px;cursor:pointer;background:none;border-top:none;border-left:none;border-right:none;font-family:var(--body)}
+.btn-ghost:hover{color:var(--saffron);border-color:var(--saffron)}
+.hero-nums{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--cream3);border:1px solid var(--cream3);border-radius:var(--r);margin-top:40px;overflow:hidden}
+.hn{background:var(--cream);padding:18px 16px}
+.hn-val{font-family:var(--serif);font-size:1.65rem;font-weight:700;color:var(--green);line-height:1;margin-bottom:4px}
+.hn-label{font-size:.6rem;color:var(--ink4);line-height:1.4}
+.hero-img{border-radius:var(--rl);overflow:hidden;aspect-ratio:4/5;background:var(--cream2);border:1px solid var(--cream3);position:relative}
+.hero-img img{width:100%;height:100%;object-fit:cover;display:block}
+.img-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--ink4)}
+.img-ph svg{width:24px;height:24px;stroke:var(--cream3);fill:none;stroke-width:1.5}
+.img-ph p{font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;text-align:center;line-height:1.65;opacity:.55}
+.hero-badge{position:absolute;bottom:20px;left:-20px;background:var(--white);border:1px solid var(--cream3);border-radius:var(--rl);padding:13px 17px;min-width:190px}
+.hb-lbl{font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;color:var(--ink4);text-transform:uppercase;margin-bottom:6px}
+.hb-row{display:flex;align-items:center;gap:7px}
+.hb-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hb-text{font-size:.875rem;font-weight:600;color:var(--ink)}
+
+/* ══════════════════════════════
+   PANEL 1 — PROBLEM
+══════════════════════════════ */
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.05);border-radius:var(--r);margin:32px 0 40px;overflow:hidden}
+.sc{background:var(--ink);padding:32px 28px;transition:background .25s}
+.sc:hover{background:rgba(255,255,255,.025)}
+.sc-num{font-family:var(--serif);font-size:clamp(2.2rem,3.5vw,3rem);font-weight:900;color:var(--saffron-mid);line-height:1;margin-bottom:12px}
+.sc-desc{font-size:1rem;color:rgba(250,247,242,.54);line-height:1.72;margin-bottom:14px}
+.sc-cite{font-family:var(--mono);font-size:.57rem;letter-spacing:.05em;color:rgba(250,247,242,.5);border-top:1px solid rgba(255,255,255,.08);padding-top:11px}
+.pull{font-family:var(--serif);font-size:1.2rem;font-style:italic;color:rgba(250,247,242,.66);line-height:1.65;max-width:580px;padding-left:22px;border-left:2px solid var(--saffron);margin-bottom:32px}
+
+/* ══════════════════════════════
+   PANEL 2 — SOLUTION + HOW IT WORKS
+══════════════════════════════ */
+.sol-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start;margin-top:32px}
+.sol-img{border-radius:var(--rl);overflow:hidden;aspect-ratio:4/5;background:var(--cream2);border:1px solid var(--cream3)}
+.sol-img img{width:100%;height:100%;object-fit:cover;display:block}
+.sol-pt{padding:20px 0;border-bottom:1px solid var(--cream3)}
+.sol-pt:last-child{border-bottom:none;padding-bottom:0}
+.sp-i{font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;color:var(--ink4);margin-bottom:8px}
+.sp-t{font-family:var(--serif);font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:7px}
+.sp-d{font-size:1rem;color:var(--ink3);line-height:1.72;font-weight:300}
+
+/* flow chart */
+.flow-section{margin-top:40px;padding-top:36px;border-top:1px solid var(--cream3)}
+.flow-label{font-family:var(--mono);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink4);margin-bottom:24px;display:flex;align-items:center;gap:10px}
+.flow-label::before{content:'';width:16px;height:1px;background:var(--ink4)}
+
+/* ── 90-DAY CYCLE FLIP CARDS ── */
+.cycle-wrap{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.flip-card{height:80px;perspective:1000px;cursor:pointer;position:relative;user-select:none;outline:none}
+.flip-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.flip-card.flipped .flip-inner{transform:rotateY(180deg)}
+.flip-front,.flip-back{position:absolute;inset:0;border-radius:var(--rl);-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.flip-front{background:var(--white);border:1px solid var(--cream3);display:grid;grid-template-columns:32px 1fr auto;align-items:center;gap:16px;padding:0 22px;transition:border-color .2s}
+.flip-card:hover .flip-front{border-color:var(--saffron)}
+.flip-card.fsc .flip-front{border-left:3px solid var(--saffron)}
+.flip-card.fgc .flip-front{border-left:3px solid var(--green)}
+.flip-back{transform:rotateY(180deg);padding:18px 24px;display:flex;align-items:center}
+.flip-back.sb{background:var(--saffron)}
+.flip-back.gb{background:var(--green)}
+.ff-idx{font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;color:var(--ink4)}
+.ff-step{font-family:var(--serif);font-size:1rem;font-weight:700;color:var(--ink2)}
+.ff-hint{font-family:var(--mono);font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink4);opacity:.35;white-space:nowrap;transition:opacity .2s,color .2s}
+.flip-card:hover .ff-hint{opacity:1;color:var(--saffron)}
+.fb-body{font-size:.85rem;color:rgba(255,255,255,.92);line-height:1.65;font-weight:300}
+
+/* ══════════════════════════════
+   PANEL 3 — PRODUCT CAROUSEL
+══════════════════════════════ */
+.c-overflow{overflow:hidden;margin-top:32px}
+.c-track{display:flex;gap:20px;transition:transform .42s cubic-bezier(.4,0,.2,1)}
+.c-card{flex:0 0 calc(33.333% - 14px);background:var(--white);border:1px solid var(--cream3);border-radius:var(--rl);padding:28px;transition:border-color .25s}
+.c-card.active{border-color:var(--saffron)}
+.c-idx{font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;color:var(--ink4);margin-bottom:16px}
+.c-title{font-family:var(--serif);font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:9px;line-height:1.25}
+.c-desc{font-size:1rem;color:var(--ink3);line-height:1.72;font-weight:300}
+.c-tag{display:inline-block;margin-top:14px;font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--saffron);border:1px solid rgba(201,106,42,.25);padding:3px 9px;border-radius:2px}
+.c-controls{display:flex;align-items:center;gap:12px;margin-top:20px}
+.c-btn{width:34px;height:34px;border:1px solid var(--cream3);border-radius:50%;background:var(--white);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s}
+.c-btn:hover{background:var(--ink);border-color:var(--ink)}
+.c-btn:hover svg{stroke:var(--cream)}
+.c-btn svg{width:11px;height:11px;stroke:var(--ink);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.c-dots{display:flex;gap:6px;align-items:center}
+.c-dot{width:5px;height:5px;border-radius:50%;background:var(--cream3);cursor:pointer;transition:all .25s}
+.c-dot.active{background:var(--saffron);width:14px;border-radius:3px}
+
+/* ══════════════════════════════
+   PANEL 4 — MARKET
+══════════════════════════════ */
+.mkt-layout{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:32px}
+.mkt-nums{display:flex;flex-direction:column;gap:1px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.05);border-radius:var(--r);overflow:hidden}
+.mn{background:var(--ink);padding:26px 28px;transition:background .25s}
+.mn:hover{background:rgba(255,255,255,.025)}
+.mn-tag{font-family:var(--mono);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(250,247,242,.28);margin-bottom:9px}
+.mn-val{font-family:var(--serif);font-size:clamp(2rem,3.5vw,2.8rem);font-weight:900;color:var(--saffron-mid);line-height:1;margin-bottom:7px}
+.mn-desc{font-size:1rem;color:rgba(250,247,242,.48);line-height:1.65}
+.mn-src{font-family:var(--mono);font-size:.57rem;color:rgba(250,247,242,.18);margin-top:9px;display:block}
+
+/* ── 2x2 IMPACT MATRIX ── */
+.bar-chart{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:var(--rl);padding:24px}
+.bc-title{font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(250,247,242,.3);margin-bottom:16px}
+.matrix-wrap{display:grid;grid-template-columns:18px 1fr;grid-template-rows:1fr 18px;gap:4px;height:260px}
+.matrix-y-label{grid-column:1;grid-row:1;font-family:var(--mono);font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(250,247,242,.25);writing-mode:vertical-rl;transform:rotate(180deg);text-align:center;white-space:nowrap}
+.matrix-x-label{grid-column:2;grid-row:2;font-family:var(--mono);font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(250,247,242,.25);text-align:center;display:flex;align-items:center;justify-content:center}
+.matrix-grid{grid-column:2;grid-row:1;position:relative;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:2px}
+.matrix-q{border-radius:4px;position:relative;display:flex;align-items:flex-end;padding:10px 12px}
+.q-tl{background:rgba(255,255,255,.025)}
+.q-tr{background:rgba(201,106,42,.08);border:1px solid rgba(201,106,42,.15)}
+.q-bl{background:rgba(255,255,255,.015)}
+.q-br{background:rgba(255,255,255,.02)}
+.q-label{font-family:var(--mono);font-size:.52rem;letter-spacing:.06em;color:rgba(250,247,242,.18);line-height:1.5;text-transform:uppercase}
+.q-label-hero{color:rgba(201,106,42,.5)}
+.q-badge{position:absolute;top:10px;right:10px;font-family:var(--mono);font-size:.52rem;letter-spacing:.08em;text-transform:uppercase;background:rgba(201,106,42,.15);color:var(--saffron-mid);padding:3px 8px;border-radius:2px;border:1px solid rgba(201,106,42,.25)}
+/* axis lines */
+.matrix-axis-h{position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(255,255,255,.08);pointer-events:none;z-index:2}
+.matrix-axis-v{position:absolute;top:0;bottom:0;left:50%;width:1px;background:rgba(255,255,255,.08);pointer-events:none;z-index:2}
+/* dots */
+.matrix-dot{position:absolute;transform:translate(-50%,-50%);z-index:10;cursor:default;display:flex;align-items:center;gap:8px}
+.dot-circle{width:12px;height:12px;border-radius:50%;flex-shrink:0;transition:transform .2s;box-shadow:0 0 0 3px rgba(255,255,255,.06)}
+.matrix-dot:hover .dot-circle{transform:scale(1.5)}
+.dot-saffron{background:var(--saffron)}
+.dot-green{background:var(--green-mid)}
+.dot-label-wrap{display:flex;flex-direction:column;gap:2px}
+.dot-label-left{order:-1;text-align:right}
+.dot-name{font-family:var(--serif);font-size:.78rem;font-weight:700;color:rgba(250,247,242,.85);line-height:1}
+.dot-sub{font-family:var(--mono);font-size:.55rem;color:rgba(250,247,242,.38);white-space:nowrap}
+.bc-src{font-family:var(--mono);font-size:.57rem;color:rgba(250,247,242,.18);margin-top:14px;letter-spacing:.05em}
+
+.mkt-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.05);border-radius:var(--r);overflow:hidden;margin-top:24px}
+.mr{background:var(--ink);padding:20px 18px}
+.mr-val{font-family:var(--serif);font-size:1.45rem;font-weight:700;color:var(--saffron-mid);margin-bottom:4px}
+.mr-label{font-size:.6rem;color:rgba(250,247,242,.38);line-height:1.5}
+
+/* ══════════════════════════════
+   PANEL 5 — BUSINESS MODEL
+══════════════════════════════ */
+.biz-layout{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:32px;align-items:start}
+.price-hero{background:var(--ink);border-radius:var(--rl);padding:36px}
+.ph-kicker{font-family:var(--mono);font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(250,247,242,.32);margin-bottom:14px}
+.ph-price{font-family:var(--serif);font-size:3.4rem;font-weight:900;color:var(--saffron-mid);line-height:1}
+.ph-period{font-size:1rem;color:rgba(250,247,242,.4);margin-bottom:26px;margin-top:4px}
+.ph-divider{height:1px;background:rgba(255,255,255,.07);margin:0 0 22px}
+.ph-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:1rem}
+.ph-row:last-child{border-bottom:none}
+.ph-row .l{color:rgba(250,247,242,.45);font-weight:300}
+.ph-row .r{font-weight:600;color:var(--cream)}
+.ph-row.hl .l,.ph-row.hl .r{color:var(--saffron-mid)}
+.biz-right{display:flex;flex-direction:column;gap:14px}
+.biz-card{background:var(--white);border:1px solid var(--cream3);border-radius:var(--rl);padding:24px}
+.bc-lbl{font-family:var(--mono);font-size:.6rem;letter-spacing:.13em;text-transform:uppercase;color:var(--ink4);margin-bottom:9px}
+.bc-val{font-family:var(--serif);font-size:1.7rem;font-weight:700;color:var(--green);margin-bottom:5px}
+.bc-desc{font-size:1rem;color:var(--ink3);line-height:1.6;font-weight:300}
+.streams{background:var(--white);border:1px solid var(--cream3);border-radius:var(--rl);overflow:hidden}
+.st-title{font-family:var(--mono);font-size:.6rem;letter-spacing:.13em;text-transform:uppercase;color:var(--ink4);padding:14px 20px;border-bottom:1px solid var(--cream3)}
+.st-item{display:flex;align-items:center;justify-content:space-between;padding:11px 20px;border-bottom:1px solid var(--cream3);font-size:1rem}
+.st-item:last-child{border-bottom:none}
+.si-n{color:var(--ink3);font-weight:300}
+.si-t{font-family:var(--mono);font-size:.6rem;color:var(--saffron);border:1px solid rgba(201,106,42,.2);padding:2px 8px;border-radius:2px}
+
+/* ══════════════════════════════
+   PANEL 6 — WHY NOW
+══════════════════════════════ */
+.wn-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:32px}
+.wn{padding:26px;border:1px solid var(--cream3);border-radius:var(--rl);background:var(--white);transition:border-color .25s,transform .25s}
+.wn:hover{border-color:var(--saffron);transform:translateY(-2px)}
+.wn-num{font-family:var(--mono);font-size:.6rem;letter-spacing:.13em;color:var(--ink4);margin-bottom:14px;display:block}
+.wn-title{font-size:1.05rem;font-weight:600;color:var(--ink);margin-bottom:8px;line-height:1.35}
+.wn-desc{font-size:1rem;color:var(--ink3);line-height:1.72;font-weight:300}
+.wn-fig{font-family:var(--serif);font-size:1.35rem;font-weight:700;color:var(--saffron);margin-top:14px}
+.wn-src{font-size:.6rem;color:var(--ink4);margin-top:2px}
+
+/* ══════════════════════════════
+   PANEL 7 — CTA
+══════════════════════════════ */
+.cta-inner{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px 0}
+.cta-inner .s-label{justify-content:center;color:rgba(250,247,242,.28)}
+.cta-inner .s-label::before{background:rgba(250,247,242,.28)}
+.cta-inner h2{color:var(--cream)}
+.cta-inner h2 em{color:var(--saffron-mid)}
+.cta-sub{font-size:1rem;color:rgba(250,247,242,.46);max-width:460px;margin:14px auto 40px;line-height:1.78;font-weight:300}
+.cta-btns{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
+.btn-saffron{background:var(--saffron);color:var(--white);padding:14px 32px;border-radius:var(--r);font-family:var(--body);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;text-decoration:none;transition:background .2s;display:inline-flex;align-items:center;gap:6px}
+.btn-saffron:hover{background:var(--saffron-mid)}
+.btn-ol{border:1px solid rgba(255,255,255,.16);color:var(--cream);padding:14px 28px;border-radius:var(--r);font-family:var(--body);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;text-decoration:none;transition:border-color .2s;display:inline-flex;align-items:center;gap:6px}
+.btn-ol:hover{border-color:rgba(255,255,255,.42)}
+.cta-mail{margin-top:32px;font-family:var(--mono);font-size:.66rem;color:rgba(250,247,242,.24);letter-spacing:.07em}
+.cta-mail a{color:rgba(250,247,242,.5);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.1)}
+.cta-mail a:hover{color:var(--saffron-mid)}
+.cta-bg{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 79px,rgba(255,255,255,.016) 80px),repeating-linear-gradient(90deg,transparent,transparent 79px,rgba(255,255,255,.016) 80px);pointer-events:none}
+
+/* panel step indicator (desktop) */
+.step-indicator{display:none}
+@media(min-width:961px){
+  .step-indicator{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;color:var(--ink4)}
+  .step-indicator.light-si{color:rgba(250,247,242,.3)}
+}
+
+/* ── MOBILE overrides ── */
+@media(max-width:960px){
+  .section-inner{min-height:auto;padding:44px 5vw 60px}
+  .hero-grid{grid-template-columns:1fr}
+  .hero-grid-right{display:none}
+  .sol-grid{grid-template-columns:1fr}
+  .sol-img{display:none}
+  .mkt-layout{grid-template-columns:1fr}
+  .mkt-row{grid-template-columns:1fr 1fr}
+  .biz-layout{grid-template-columns:1fr}
+  .wn-grid{grid-template-columns:1fr}
+  .stat-row{grid-template-columns:1fr}
+  .c-card{flex:0 0 calc(82% - 10px)}
+  .panel-nav{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo">Swasth <span>Mandal</span> 2.0</div>
+  <div class="nav-tabs" id="nav-tabs">
+    <button class="nav-tab active" data-panel="home">Overview</button>
+    <button class="nav-tab" data-panel="problem">Problem</button>
+    <button class="nav-tab" data-panel="solution">Solution</button>
+    <button class="nav-tab" data-panel="product">Product</button>
+    <button class="nav-tab" data-panel="market">Market</button>
+    <button class="nav-tab" data-panel="model">Model</button>
+    <button class="nav-tab" data-panel="whynow">Why Now</button>
+  </div>
+  <button class="nav-cta" onclick="openDeckModal()">Request Deck</button>
+</nav>
+
+<div class="panels-wrap" id="panels-wrap">
+
+  <!-- ═══ PANEL 0: HERO ═══ -->
+  <div class="panel active" id="panel-home">
+    <div class="section-inner light">
+      <div class="hero-grid">
+        <div>
+          <div class="kicker">Seed Round &nbsp;&middot;&nbsp; Indian Preventive Healthtech</div>
+          <h1>India's families are <em>sick</em> and don't know it yet.</h1>
+          <p class="hero-sub">Swasth Mandal 2.0 is a ₹2,499 quarterly subscription that brings preventive healthcare home — a proprietary 3-in-1 test strip, a trained Swasth Sevika at the door, and a WhatsApp AI coach that closes the loop before a crisis.</p>
+          <div class="btns">
+            <button class="btn-dark" onclick="openDeckModal()">Request a Pitch Deck &rarr;</button>
+            <button class="btn-ghost" id="see-case-btn" onclick="switchPanel('problem')">See the case &darr;</button>
+          </div>
+          <div class="hero-nums">
+            <div class="hn"><div class="hn-val">₹2,499</div><div class="hn-label">per quarter,<br>family of 4</div></div>
+            <div class="hn"><div class="hn-val">58%</div><div class="hn-label">gross margin<br>at scale</div></div>
+            <div class="hn"><div class="hn-val">11.6x</div><div class="hn-label">LTV to CAC<br>ratio</div></div>
+          </div>
+        </div>
+        <div class="hero-grid-right">
+          <div class="hero-img">
+            <!-- Replace with: <img src="GenAI_4.png" alt="Swasth Mandal"> -->
+            <div class="img-ph">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <p>Replace with GenAI_4.png<br>&lt;img src="GenAI_4.png"&gt;</p>
+            </div>
+          </div>
+          <div class="hero-badge">
+            <div class="hb-lbl">Live Signal</div>
+            <div class="hb-row"><div class="hb-dot"></div><div class="hb-text">Sevika visit confirmed</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-nav">
+        <div class="pn-spacer"></div>
+        <button class="pn-next" onclick="switchPanel('problem')">The Problem &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PANEL 1: PROBLEM ═══ -->
+  <div class="panel" id="panel-problem">
+    <div class="section-inner dark">
+      <div class="s-label light-lbl">01 &mdash; The Problem</div>
+      <h2 class="light-h">Invisible illness is<br>India's <em>largest</em> health crisis.</h2>
+      <p class="s-intro light-p">Urban Indians broadly know the risks. The failure is not awareness — it is activation. There is nothing between "feeling fine" and "emergency room."</p>
+      <div class="stat-row">
+        <div class="sc">
+          <div class="sc-num">77M</div>
+          <div class="sc-desc">Indians living with diabetes — the highest absolute count in the world. More than 50% are undiagnosed at any given time.</div>
+          <div class="sc-cite">International Diabetes Federation &mdash; Diabetes Atlas 10th Ed., 2023 &middot; idf.org</div>
+        </div>
+        <div class="sc">
+          <div class="sc-num">30%</div>
+          <div class="sc-desc">of urban Indian adults have hypertension. Fewer than 15% have it under control. Most have never been formally screened.</div>
+          <div class="sc-cite">Lancet Regional Health &mdash; Southeast Asia, Vol. 8, 2022 &middot; thelancet.com</div>
+        </div>
+        <div class="sc">
+          <div class="sc-num">&lt;3%</div>
+          <div class="sc-desc">of Indians undergo any preventive health screening annually — structurally lower than comparable emerging markets worldwide.</div>
+          <div class="sc-cite">FICCI&ndash;EY Future of Healthcare Report, 2023 &middot; ficci.in</div>
+        </div>
+      </div>
+      <div class="pull">"Indians don't skip preventive healthcare because they don't care. They skip it because no one made it feel like it belongs in their life."</div>
+      <div class="panel-nav dark-nav">
+        <button class="pn-back" onclick="switchPanel('home')">&larr; Overview</button>
+        <button class="pn-next" onclick="switchPanel('solution')">The Solution &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PANEL 2: SOLUTION ═══ -->
+  <div class="panel" id="panel-solution">
+    <div class="section-inner light">
+      <div class="s-label">02 &mdash; The Solution</div>
+      <h2>A quarterly <em>ritual,</em> not another app.</h2>
+      <div class="sol-grid">
+        <div class="sol-img">
+          <!-- Replace with: <img src="GENAI_5.png" alt="Swasth Mandal"> -->
+          <div class="img-ph" style="height:100%;min-height:380px">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <p>Replace with GENAI_5.png</p>
+          </div>
+        </div>
+        <div>
+          <div class="sol-pt"><div class="sp-i">01</div><div class="sp-t">Box arrives. Sevika arrives.</div><div class="sp-d">A trained Swasth Sevika delivers the box, validates every reading in person, and becomes the family's named health contact. Human trust — not app trust — is the unlock no digital-first competitor can replicate.</div></div>
+          <div class="sol-pt"><div class="sp-i">02</div><div class="sp-t">Proprietary tools. Not chemist generics.</div><div class="sp-d">Our 3-in-1 strip reads glucose, HbA1c proxy, and cholesterol from a single prick. The guided BP sleeve corrects posture before reading. Neither available from any pharmacy shelf.</div></div>
+          <div class="sol-pt"><div class="sp-i">03</div><div class="sp-t">WhatsApp AI with nurse oversight.</div><div class="sp-d">Monthly nurse video check-ins. Automated lab booking on flagged readings. AI nudges in Hindi, Tamil, Marathi. No app download — 487 million Indian users already in the channel.</div></div>
+          <div class="sol-pt"><div class="sp-i">04</div><div class="sp-t">Community layer builds network effects.</div><div class="sp-d">Building-level health dashboards turn individual data into a shared neighbourhood ritual — driving organic referrals at near-zero marginal CAC.</div></div>
+        </div>
+      </div>
+      <!-- FLIP CARD CYCLE -->
+      <div class="flow-section">
+        <div class="flow-label">The 90-day cycle &nbsp;&middot;&nbsp; <span style="font-weight:400;letter-spacing:.04em;text-transform:none;opacity:.7">Click any card to learn more</span></div>
+        <div class="cycle-wrap">
+
+          <div class="flip-card fsc" onclick="this.classList.toggle('flipped')">
+            <div class="flip-inner">
+              <div class="flip-front"><span class="ff-idx">01</span><span class="ff-step">Box delivered</span><span class="ff-hint">Flip &rarr;</span></div>
+              <div class="flip-back sb"><p class="fb-body">Every 90 days your Swasth Mandal box arrives — a 3-in-1 test strip, guided BP sleeve, cortisol strip, and junior health card. No chemist visit, no scheduling required.</p></div>
+            </div>
+          </div>
+
+          <div class="flip-card fgc" onclick="this.classList.toggle('flipped')">
+            <div class="flip-inner">
+              <div class="flip-front"><span class="ff-idx">02</span><span class="ff-step">Sevika visits</span><span class="ff-hint">Flip &rarr;</span></div>
+              <div class="flip-back gb"><p class="fb-body">A trained Swasth Sevika sits with your family, validates every reading in person, explains what they mean, and becomes your named health contact for the quarter.</p></div>
+            </div>
+          </div>
+
+          <div class="flip-card fsc" onclick="this.classList.toggle('flipped')">
+            <div class="flip-inner">
+              <div class="flip-front"><span class="ff-idx">03</span><span class="ff-step">Readings logged</span><span class="ff-hint">Flip &rarr;</span></div>
+              <div class="flip-back sb"><p class="fb-body">All readings enter the platform via a WhatsApp scan. The AI coach tracks trends quarter over quarter, surfacing patterns before they become clinical problems.</p></div>
+            </div>
+          </div>
+
+          <div class="flip-card fgc" onclick="this.classList.toggle('flipped')">
+            <div class="flip-inner">
+              <div class="flip-front"><span class="ff-idx">04</span><span class="ff-step">Nurse check-in</span><span class="ff-hint">Flip &rarr;</span></div>
+              <div class="flip-back gb"><p class="fb-body">A qualified nurse reviews your data on a monthly 10-minute WhatsApp video call — in your language. She contextualises readings and decides if escalation is needed.</p></div>
+            </div>
+          </div>
+
+          <div class="flip-card fgc" onclick="this.classList.toggle('flipped')">
+            <div class="flip-inner">
+              <div class="flip-front"><span class="ff-idx">05</span><span class="ff-step">Action taken</span><span class="ff-hint">Flip &rarr;</span></div>
+              <div class="flip-back gb"><p class="fb-body">Flagged readings auto-book a discounted lab test with SRL or Lal Pathlabs — pre-filled, two taps. All clear? A health score is issued and the 90-day cycle resets.</p></div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="cycle-footer">
+          <div class="cycle-loop-line"></div>
+          <span class="cycle-loop-label">Repeats every 90 days</span>
+          <div class="cycle-loop-line"></div>
+        </div>
+      </div>
+      <div class="panel-nav">
+        <button class="pn-back" onclick="switchPanel('problem')">&larr; Problem</button>
+        <button class="pn-next" onclick="switchPanel('product')">The Product &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PANEL 3: PRODUCT ═══ -->
+  <div class="panel" id="panel-product">
+    <div class="section-inner mid">
+      <div class="s-label">03 &mdash; The Product</div>
+      <h2>What's in the box.</h2>
+      <p class="s-intro">Five components — four physical innovations and one human layer — that together make Swasth Mandal structurally difficult to replicate.</p>
+      <div class="c-overflow">
+        <div class="c-track" id="ctrack">
+          <div class="c-card active">
+            <div class="c-idx">01 / 05</div>
+            <div class="c-title">3-in-1 Proprietary Test Strip</div>
+            <div class="c-desc">A single-prick strip reading glucose, HbA1c trend proxy, and cholesterol simultaneously. Not stocked at any pharmacy. CDSCO Class B certification is our primary regulatory moat — the hardest component for a competitor to fast-follow at comparable economics.</div>
+            <span class="c-tag">Proprietary IP</span>
+          </div>
+          <div class="c-card">
+            <div class="c-idx">02 / 05</div>
+            <div class="c-title">Guided BP Sleeve</div>
+            <div class="c-desc">An upper-arm cuff with embedded posture sensor that detects incorrect arm positioning and prompts correction before reading. Eliminates the leading source of inaccurate home BP measurement and the anxiety that follows incorrect readings.</div>
+            <span class="c-tag">Hardware Innovation</span>
+          </div>
+          <div class="c-card">
+            <div class="c-idx">03 / 05</div>
+            <div class="c-title">Cortisol Saliva Stress Strip</div>
+            <div class="c-desc">A morning colour-change strip quantifying cortisol as a proxy for chronic stress load. First product in the Indian mass market to make stress physiologically measurable at home — at approximately ₹12 per strip, sustainable inside a ₹2,499 quarterly box.</div>
+            <span class="c-tag">Market First</span>
+          </div>
+          <div class="c-card">
+            <div class="c-idx">04 / 05</div>
+            <div class="c-title">Junior Health Card</div>
+            <div class="c-desc">A structured growth-tracking card for children monitoring BMI trajectory and flagging early obesity risk. Addresses rising childhood metabolic disease in urban India and expands addressable footprint beyond adult decision-makers in each household.</div>
+            <span class="c-tag">Untapped Segment</span>
+          </div>
+          <div class="c-card">
+            <div class="c-idx">05 / 05</div>
+            <div class="c-title">The Swasth Sevika</div>
+            <div class="c-desc">A trained local health companion who delivers the box, validates first readings in person, and becomes the family's named contact. Modelled on the ASHA worker network. She is the activation mechanism no D2C-only competitor can replicate — and why projected annual churn sits below 20%.</div>
+            <span class="c-tag">Core Moat</span>
+          </div>
+        </div>
+      </div>
+      <div class="c-controls">
+        <button class="c-btn" id="cprev"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+        <button class="c-btn" id="cnext"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></button>
+        <div class="c-dots" id="cdots">
+          <div class="c-dot active"></div><div class="c-dot"></div><div class="c-dot"></div><div class="c-dot"></div><div class="c-dot"></div>
+        </div>
+      </div>
+      <div class="panel-nav">
+        <button class="pn-back" onclick="switchPanel('solution')">&larr; Solution</button>
+        <button class="pn-next" onclick="switchPanel('market')">Market Size &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PANEL 4: MARKET ═══ -->
+  <div class="panel" id="panel-market">
+    <div class="section-inner dark">
+      <div class="s-label light-lbl">04 &mdash; Market Size</div>
+      <h2 class="light-h">A large market with<br><em>no clear winner</em> yet.</h2>
+      <p class="s-intro light-p">No competitor has addressed this at the right price point with the right model. Post-COVID health intent, chronic disease burden, and smartphone penetration have converged.</p>
+      <div class="mkt-layout">
+        <div class="mkt-nums">
+          <div class="mn">
+            <div class="mn-tag">TAM &mdash; Total Addressable Market</div>
+            <div class="mn-val">$50B</div>
+            <div class="mn-desc">India's preventive and diagnostics healthcare market by 2030, growing at 22% CAGR.</div>
+            <span class="mn-src">KPMG India Healthcare Report, 2023</span>
+          </div>
+          <div class="mn">
+            <div class="mn-tag">SAM &mdash; Serviceable Addressable Market</div>
+            <div class="mn-val">$4.2B</div>
+            <div class="mn-desc">Urban households in top 30 cities, income above ₹8L p.a., demonstrated willingness to pay for health subscriptions. ~28 million households.</div>
+            <span class="mn-src">MOSPI + Kantar India, 2023</span>
+          </div>
+        </div>
+        <div class="bar-chart" id="bar-chart">
+          <div class="bc-title">Condition impact matrix — prevalence vs. detection gap</div>
+          <div class="matrix-wrap">
+            <!-- Y axis label -->
+            <div class="matrix-y-label">Detection gap &uarr;</div>
+            <!-- Grid -->
+            <div class="matrix-grid">
+              <!-- Quadrant backgrounds -->
+              <div class="matrix-q q-tl"><span class="q-label">High gap<br>Low prevalence</span></div>
+              <div class="matrix-q q-tr"><span class="q-label q-label-hero">High gap<br>High prevalence</span><span class="q-badge">Swasth Mandal zone</span></div>
+              <div class="matrix-q q-bl"><span class="q-label">Low gap<br>Low prevalence</span></div>
+              <div class="matrix-q q-br"><span class="q-label">Low gap<br>High prevalence</span></div>
+              <!-- Axis lines -->
+              <div class="matrix-axis-h"></div>
+              <div class="matrix-axis-v"></div>
+              <!-- Dots -->
+              <div class="matrix-dot" style="left:72%;top:22%" data-label="Stress" data-sub="74% untracked · chronic, silent">
+                <div class="dot-circle dot-green"></div>
+                <div class="dot-label-wrap dot-label-left"><div class="dot-name">Stress</div><div class="dot-sub">74% untracked</div></div>
+              </div>
+              <div class="matrix-dot" style="left:78%;top:30%" data-label="Hypertension" data-sub="68% uncontrolled · 30% prevalence">
+                <div class="dot-circle dot-saffron"></div>
+                <div class="dot-label-wrap"><div class="dot-name">Hypertension</div><div class="dot-sub">68% uncontrolled</div></div>
+              </div>
+              <div class="matrix-dot" style="left:68%;top:42%" data-label="Diabetes" data-sub="52% undiagnosed · 77M affected">
+                <div class="dot-circle dot-saffron"></div>
+                <div class="dot-label-wrap"><div class="dot-name">Diabetes</div><div class="dot-sub">52% undiagnosed</div></div>
+              </div>
+              <div class="matrix-dot" style="left:55%;top:55%" data-label="Obesity" data-sub="40% unaware · rising fast">
+                <div class="dot-circle dot-green"></div>
+                <div class="dot-label-wrap dot-label-left"><div class="dot-name">Obesity</div><div class="dot-sub">40% unaware</div></div>
+              </div>
+            </div>
+            <!-- X axis label -->
+            <div class="matrix-x-label">Prevalence in urban India &rarr;</div>
+          </div>
+          <div class="bc-src">Sources: IDF Atlas 2023 &middot; Lancet SEA 2022 &middot; ICMR NCD Report 2022</div>
+        </div>
+      </div>
+      <div class="mkt-row">
+        <div class="mr"><div class="mr-val">280M</div><div class="mr-label">Urban Indians in target demographic</div></div>
+        <div class="mr"><div class="mr-val">22%</div><div class="mr-label">CAGR of preventive health market</div></div>
+        <div class="mr"><div class="mr-val">70%</div><div class="mr-label">Smartphone penetration, urban India</div></div>
+        <div class="mr"><div class="mr-val">487M</div><div class="mr-label">WhatsApp users — primary channel</div></div>
+      </div>
+      <div class="panel-nav dark-nav">
+        <button class="pn-back" onclick="switchPanel('product')">&larr; Product</button>
+        <button class="pn-next" onclick="switchPanel('model')">Business Model &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PANEL 5: BUSINESS MODEL ═══ -->
+  <div class="panel" id="panel-model">
+    <div class="section-inner mid">
+      <div class="s-label">05 &mdash; Business Model</div>
+      <h2>Sustainable at <em>middle-class</em> price points.</h2>
+      <p class="s-intro">A multi-stream model — subscription anchored, with high-margin revenue layers that scale independently.</p>
+      <div class="biz-layout">
+        <div class="price-hero">
+          <div class="ph-kicker">Quarterly Plan</div>
+          <div class="ph-price">₹2,499</div>
+          <div class="ph-period">per quarter &nbsp;&middot;&nbsp; family of 4 &nbsp;&middot;&nbsp; ₹624 per person</div>
+          <div class="ph-divider"></div>
+          <div class="ph-row"><span class="l">Includes</span><span class="r">Full box + Sevika visit</span></div>
+          <div class="ph-row"><span class="l">AI coach</span><span class="r">WhatsApp, always on</span></div>
+          <div class="ph-row"><span class="l">Nurse check-in</span><span class="r">Monthly video call</span></div>
+          <div class="ph-row"><span class="l">Languages</span><span class="r">Hindi, Tamil, Marathi +</span></div>
+          <div class="ph-row hl"><span class="l">Less than</span><span class="r">One doctor visit</span></div>
+        </div>
+        <div class="biz-right">
+          <div class="biz-card">
+            <div class="bc-lbl">2-Year Subscriber LTV</div>
+            <div class="bc-val">₹14,000</div>
+            <div class="bc-desc">8 quarterly boxes plus lab referral commissions and upsell probability — from a single household acquisition.</div>
+          </div>
+          <div class="biz-card">
+            <div class="bc-lbl">LTV to CAC Ratio</div>
+            <div class="bc-val">11.6x</div>
+            <div class="bc-desc">Sevika-led referral and RWA word-of-mouth targets structurally lower CAC than any D2C-first competitor using paid acquisition.</div>
+          </div>
+          <div class="streams">
+            <div class="st-title">Revenue Streams</div>
+            <div class="st-item"><span class="si-n">Quarterly subscription — consumer</span><span class="si-t">Core</span></div>
+            <div class="st-item"><span class="si-n">Lab referral commissions</span><span class="si-t">High margin</span></div>
+            <div class="st-item"><span class="si-n">Corporate &amp; employer wellness</span><span class="si-t">B2B</span></div>
+            <div class="st-item"><span class="si-n">Diwali &amp; seasonal gift boxes</span><span class="si-t">Seasonal</span></div>
+            <div class="st-item"><span class="si-n">RWA community wellness plans</span><span class="si-t">Scale</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-nav">
+        <button class="pn-back" onclick="switchPanel('market')">&larr; Market</button>
+        <button class="pn-next" onclick="switchPanel('whynow')">Why Now &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PANEL 6: WHY NOW ═══ -->
+  <div class="panel" id="panel-whynow">
+    <div class="section-inner light">
+      <div class="s-label">06 &mdash; Why Now</div>
+      <h2>Three forces have <em>converged.</em></h2>
+      <p class="s-intro">Miss this window and a better-capitalised competitor will own the category. Each tailwind compounds the others.</p>
+      <div class="wn-grid">
+        <div class="wn">
+          <span class="wn-num">01</span>
+          <div class="wn-title">Post-COVID health intent is now structural</div>
+          <div class="wn-desc">COVID permanently restructured urban middle-class attitudes. Health anxiety is now embedded — but the products to serve it at an accessible price point have not followed the cultural shift.</div>
+          <div class="wn-fig">67%</div>
+          <div class="wn-src">of urban Indians report thinking more proactively about health &middot; Kantar Health Barometer, 2023</div>
+        </div>
+        <div class="wn">
+          <span class="wn-num">02</span>
+          <div class="wn-title">WhatsApp is already the healthcare OS</div>
+          <div class="wn-desc">487 million Indian WhatsApp users share health updates and doctor notes in family groups daily. We are inserting into a behaviour that already exists at scale — not engineering a new one.</div>
+          <div class="wn-fig">487M users</div>
+          <div class="wn-src">in India alone &middot; Meta Q3 2023 earnings disclosure</div>
+        </div>
+        <div class="wn">
+          <span class="wn-num">03</span>
+          <div class="wn-title">Human + AI is the only trusted combination</div>
+          <div class="wn-desc">Indian consumers have consistently declined to trust pure-AI health advice. The Sevika model solves this — AI handles pattern recognition, a human delivers the relationship. No competitor has cracked this at our price point.</div>
+          <div class="wn-fig">First mover</div>
+          <div class="wn-src">in human-validated quarterly preventive subscription in India</div>
+        </div>
+      </div>
+
+      <div class="panel-nav">
+        <button class="pn-back" onclick="switchPanel('model')">&larr; Model</button>
+        <button class="pn-next saffron-btn" onclick="switchPanel('cta')">Partner With Us &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PANEL 7: CTA ═══ -->
+  <div class="panel" id="panel-cta">
+    <div class="section-inner dark" style="position:relative">
+      <div class="cta-bg"></div>
+      <div class="cta-inner">
+        <div class="s-label light-lbl" style="justify-content:center">07 &mdash; Partner With Us</div>
+        <h2 class="light-h">The right time to back<br><em>preventive India.</em></h2>
+        <p class="cta-sub">We are raising a seed round to fund Sevika network expansion, CDSCO strip certification, and city-by-city rollout across 5 metros. If you invest in Indian healthtech with conviction, we want to talk.</p>
+        <div class="cta-btns">
+          <button class="btn-saffron" onclick="openDeckModal()">Request the Pitch Deck &rarr;</button>
+          <a href="#" class="btn-ol" onclick="event.preventDefault();openCallModal()">Schedule a Call</a>
+        </div>
+        <div class="cta-mail">Reach us at &nbsp;<a href="/cdn-cgi/l/email-protection#d0b9bea6b5a3a490a3a7b1a3a4b8bdb1beb4b1bcfeb9be"><span class="__cf_email__" data-cfemail="adc4c3dbc8ded9eddedaccded9c5c0ccc3c9ccc183c4c3">[email&#160;protected]</span></a></div>
+      </div>
+      <div class="panel-nav dark-nav" style="border-top-color:rgba(255,255,255,.06)">
+        <button class="pn-back" onclick="switchPanel('whynow')">&larr; Why Now</button>
+        <button class="pn-next" onclick="switchPanel('home')">Back to Overview</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end panels-wrap -->
+
+<!-- ═══ EMAIL CAPTURE MODAL ═══ -->
+<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <div class="modal-kicker">Investor Relations</div>
+    <div class="modal-title">Request the Pitch Deck</div>
+    <p class="modal-sub">We'll send the full deck within 24 hours. All conversations are confidential.</p>
+    <div id="modal-form">
+      <div class="modal-field">
+        <label class="modal-label">Your name</label>
+        <input type="text" id="m-name" class="modal-input" placeholder="Priya Sharma">
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">Fund or firm</label>
+        <input type="text" id="m-fund" class="modal-input" placeholder="Sequoia India">
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">Email address</label>
+        <input type="email" id="m-email" class="modal-input" placeholder="priya@fund.com">
+      </div>
+      <button class="modal-submit" onclick="submitDeck()">Send me the deck &rarr;</button>
+      <p class="modal-note">We do not share your details with third parties.</p>
+    </div>
+    <div id="modal-thanks" style="display:none;text-align:center;padding:20px 0">
+      <div class="modal-thanks-icon">&#10003;</div>
+      <div class="modal-thanks-title">Thank you, <span id="thanks-name"></span></div>
+      <p class="modal-thanks-sub">We'll be in touch within 24 hours at the email you provided.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SCHEDULE A CALL MODAL ═══ -->
+<div class="modal-overlay" id="call-modal" onclick="if(event.target===this)closeCallModal()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeCallModal()">&times;</button>
+    <div class="modal-kicker">Investor Relations</div>
+    <div class="modal-title">Schedule a Call</div>
+    <p class="modal-sub">Leave your details and we'll reach out within 24 hours to book a time that works for you.</p>
+    <div id="call-form">
+      <div class="modal-field">
+        <label class="modal-label">Your name</label>
+        <input type="text" id="c-name" class="modal-input" placeholder="Rahul Mehta">
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">Fund or firm</label>
+        <input type="text" id="c-fund" class="modal-input" placeholder="Nexus Venture Partners">
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">Email address</label>
+        <input type="email" id="c-email" class="modal-input" placeholder="rahul@fund.com">
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">Preferred time (optional)</label>
+        <input type="text" id="c-time" class="modal-input" placeholder="e.g. Weekday mornings IST">
+      </div>
+      <button class="modal-submit" onclick="submitCall()">Request a call &rarr;</button>
+      <p class="modal-note">We'll confirm within 24 hours. All conversations are confidential.</p>
+    </div>
+    <div id="call-thanks" style="display:none;text-align:center;padding:20px 0">
+      <div class="modal-thanks-icon">&#10003;</div>
+      <div class="modal-thanks-title">Thank you, <span id="call-thanks-name"></span></div>
+      <p class="modal-thanks-sub">We'll reach out within 24 hours to confirm a time. Looking forward to the conversation.</p>
+    </div>
+  </div>
+</div>
+<style>
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(24,20,15,.7);z-index:800;display:none;align-items:center;justify-content:center;backdrop-filter:blur(6px)}
+.modal-overlay.open{display:flex}
+.modal-box{background:var(--cream);border-radius:var(--rl);padding:40px;width:100%;max-width:440px;position:relative;margin:20px;animation:modalIn .3s cubic-bezier(.4,0,.2,1)}
+@keyframes modalIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.modal-close{position:absolute;top:16px;right:16px;background:none;border:none;font-size:1.2rem;color:var(--ink4);cursor:pointer;line-height:1;padding:4px 8px;border-radius:var(--r);transition:background .2s}
+.modal-close:hover{background:var(--cream2)}
+.modal-kicker{font-family:var(--mono);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--saffron);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.modal-kicker::before{content:'';width:16px;height:1px;background:var(--saffron)}
+.modal-title{font-family:var(--serif);font-size:1.6rem;font-weight:700;color:var(--ink);margin-bottom:8px;letter-spacing:-.01em}
+.modal-sub{font-size:.875rem;color:var(--ink3);line-height:1.65;font-weight:300;margin-bottom:28px}
+.modal-field{margin-bottom:16px}
+.modal-label{display:block;font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink4);margin-bottom:6px}
+.modal-input{width:100%;padding:10px 14px;border:1px solid var(--cream3);border-radius:var(--r);font-family:var(--body);font-size:.9rem;color:var(--ink);background:var(--white);transition:border-color .2s;outline:none}
+.modal-input:focus{border-color:var(--saffron)}
+.modal-submit{width:100%;background:var(--ink);color:var(--cream);border:none;padding:13px;border-radius:var(--r);font-family:var(--body);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;cursor:pointer;transition:background .2s;margin-top:8px}
+.modal-submit:hover{background:var(--saffron)}
+.modal-note{font-family:var(--mono);font-size:.58rem;color:var(--ink4);text-align:center;margin-top:12px;letter-spacing:.04em}
+.modal-thanks-icon{font-size:2rem;color:var(--green);margin-bottom:16px}
+.modal-thanks-title{font-family:var(--serif);font-size:1.4rem;font-weight:700;color:var(--ink);margin-bottom:10px}
+.modal-thanks-sub{font-size:.875rem;color:var(--ink3);line-height:1.65;font-weight:300}
+
+/* ── INDIA MAP ── */
+.india-map-wrap{margin-top:32px;background:var(--cream2);border:1px solid var(--cream3);border-radius:var(--rl);padding:24px;display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center}
+.map-container{position:relative}
+.map-container svg{width:100%;height:auto;display:block}
+.map-city-list{display:flex;flex-direction:column;gap:10px}
+.map-city-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:var(--r);border:1px solid var(--cream3);background:var(--white);transition:border-color .2s}
+.map-city-item:hover{border-color:var(--saffron)}
+.city-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.city-dot.s{background:var(--saffron)}
+.city-dot.g{background:var(--green)}
+.city-info{display:flex;flex-direction:column;gap:2px}
+.city-name{font-family:var(--serif);font-size:.92rem;font-weight:700;color:var(--ink)}
+.city-detail{font-size:.72rem;color:var(--ink3);font-weight:300}
+.map-title{font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink4);margin-bottom:16px}
+</style>
+
+<script>
+const PANELS=['home','problem','solution','product','market','model','whynow','cta'];
+let currentPanel='home';
+
+function flipCard(el){
+  if(el.classList.contains('flipped')){
+    el.classList.remove('flipped');
+    el.style.height='72px';
+  } else {
+    el.classList.add('flipped');
+    el.style.height='160px';
+  }
+}
+
+function switchPanel(id){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  const panel=document.getElementById('panel-'+id);
+  if(panel)panel.classList.add('active');
+  const tab=document.querySelector('.nav-tab[data-panel="'+id+'"]');
+  if(tab)tab.classList.add('active');
+  currentPanel=id;
+  if(panel)panel.scrollTop=0;
+  if(id==='market'){
+    document.querySelectorAll('.matrix-dot').forEach(function(d){
+      d.style.opacity='0';d.style.transform='translate(-50%,-50%) scale(0)';d.style.transition='none';
+    });
+    setTimeout(animateDots,120);
+  }
+  document.getElementById('progress').style.width='0%';
+}
+
+function openDeckModal(){
+  document.getElementById('modal').classList.add('open');
+  document.getElementById('modal-form').style.display='block';
+  document.getElementById('modal-thanks').style.display='none';
+  ['m-name','m-fund','m-email'].forEach(function(id){
+    document.getElementById(id).value='';
+    document.getElementById(id).style.borderColor='';
+  });
+  setTimeout(function(){document.getElementById('m-name').focus();},100);
+}
+
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+}
+
+function submitDeck(){
+  var name=document.getElementById('m-name').value.trim();
+  var fund=document.getElementById('m-fund').value.trim();
+  var email=document.getElementById('m-email').value.trim();
+  document.getElementById('m-name').style.borderColor=!name?'var(--saffron)':'';
+  document.getElementById('m-email').style.borderColor=!email?'var(--saffron)':'';
+  if(!name||!email)return;
+  document.getElementById('thanks-name').textContent=name.split(' ')[0];
+  document.getElementById('modal-form').style.display='none';
+  document.getElementById('modal-thanks').style.display='block';
+}
+
+function openCallModal(){
+  document.getElementById('call-modal').classList.add('open');
+}
+
+function closeCallModal(){
+  document.getElementById('call-modal').classList.remove('open');
+}
+
+function submitCall(){
+  var name=document.getElementById('c-name').value.trim();
+  var email=document.getElementById('c-email').value.trim();
+  document.getElementById('c-name').style.borderColor=!name?'var(--saffron)':'';
+  document.getElementById('c-email').style.borderColor=!email?'var(--saffron)':'';
+  if(!name||!email)return;
+  document.getElementById('call-thanks-name').textContent=name.split(' ')[0];
+  document.getElementById('call-form').style.display='none';
+  document.getElementById('call-thanks').style.display='block';
+}
+
+// Nav tabs
+document.querySelectorAll('.nav-tab').forEach(function(btn){
+  btn.addEventListener('click',function(){switchPanel(btn.dataset.panel);});
+});
+
+// Keyboard nav
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){closeModal();closeCallModal();return;}
+  if(document.getElementById('modal').classList.contains('open'))return;
+  if(document.getElementById('call-modal').classList.contains('open'))return;
+  var idx=PANELS.indexOf(currentPanel);
+  if(e.key==='ArrowRight'&&idx<PANELS.length-1)switchPanel(PANELS[idx+1]);
+  if(e.key==='ArrowLeft'&&idx>0)switchPanel(PANELS[idx-1]);
+});
+
+// Panel scroll progress
+document.querySelectorAll('.panel').forEach(function(panel){
+  panel.addEventListener('scroll',function(){
+    if(window.innerWidth>960){
+      var pct=panel.scrollTop/(panel.scrollHeight-panel.clientHeight)*100;
+      document.getElementById('progress').style.width=Math.min(pct,100)+'%';
+    }
+  });
+});
+
+// Mobile scroll progress
+window.addEventListener('scroll',function(){
+  if(window.innerWidth<=960){
+    var pct=window.scrollY/(document.body.scrollHeight-window.innerHeight)*100;
+    document.getElementById('progress').style.width=Math.min(pct,100)+'%';
+  }
+});
+
+// Matrix dot animation
+function animateDots(){
+  document.querySelectorAll('.matrix-dot').forEach(function(dot,i){
+    dot.style.opacity='0';dot.style.transform='translate(-50%,-50%) scale(0)';
+    setTimeout(function(){
+      dot.style.transition='opacity .4s ease, transform .4s cubic-bezier(.34,1.56,.64,1)';
+      dot.style.opacity='1';dot.style.transform='translate(-50%,-50%) scale(1)';
+    },i*150+100);
+  });
+}
+
+var barObs=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){if(e.isIntersecting)animateDots();});
+},{threshold:.3});
+var bc=document.getElementById('bar-chart');
+if(bc)barObs.observe(bc);
+
+// Cycle card flip - also handled inline via onclick on each card
+document.querySelectorAll('.cycle-card').forEach(function(card){
+  card.addEventListener('click',function(){
+    var willFlip=!card.classList.contains('flipped');
+    card.style.height=willFlip?'160px':'72px';
+    card.classList.toggle('flipped');
+  });
+});
+
+// Carousel
+var track=document.getElementById('ctrack');
+var cards=[].slice.call(track.querySelectorAll('.c-card'));
+var cdots=[].slice.call(document.querySelectorAll('#cdots .c-dot'));
+var cur=0;
+function vis(){return window.innerWidth>960?3:1;}
+function goTo(n){
+  var max=cards.length-vis();
+  cur=Math.max(0,Math.min(n,max));
+  track.style.transform='translateX(-'+(cur*(cards[0].offsetWidth+20))+'px)';
+  cards.forEach(function(c,i){c.classList.toggle('active',i===cur);});
+  cdots.forEach(function(d,i){d.classList.toggle('active',i===cur);});
+}
+document.getElementById('cprev').onclick=function(){goTo(cur-1);};
+document.getElementById('cnext').onclick=function(){goTo(cur+1);};
+cdots.forEach(function(d,i){d.onclick=function(){goTo(i);};});
+window.addEventListener('resize',function(){goTo(cur);});
+
+// Bind see the case button directly
+var seeCase=document.getElementById('see-case-btn');
+if(seeCase){
+  seeCase.onclick=function(e){
+    e.preventDefault();
+    switchPanel('problem');
+  };
+}
+</script>
+<style>
+@keyframes mapPulse{0%{r:8;opacity:.5}70%{r:18;opacity:0}100%{r:18;opacity:0}}
+.pulse-ring{animation:mapPulse 2.4s ease-out infinite}
+</style>
+</body>
+</html>
