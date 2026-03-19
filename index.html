@@ -109,8 +109,8 @@ h1 em{font-style:italic;color:var(--saffron)}
 .hn{background:var(--cream);padding:18px 16px}
 .hn-val{font-family:var(--serif);font-size:1.65rem;font-weight:700;color:var(--green);line-height:1;margin-bottom:4px}
 .hn-label{font-size:.6rem;color:var(--ink4);line-height:1.4}
-.hero-img{border-radius:var(--rl);overflow:hidden;aspect-ratio:4/5;background:var(--cream2);border:1px solid var(--cream3);position:relative}
-.hero-img img{width:100%;height:100%;object-fit:cover;display:block}
+.hero-img{border-radius:var(--rl);overflow:hidden;aspect-ratio:3/4;background:var(--cream2);border:1px solid var(--cream3);position:relative}
+.hero-img img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
 .img-ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--ink4)}
 .img-ph svg{width:24px;height:24px;stroke:var(--cream3);fill:none;stroke-width:1.5}
 .img-ph p{font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;text-align:center;line-height:1.65;opacity:.55}
@@ -358,10 +358,6 @@ h1 em{font-style:italic;color:var(--saffron)}
         <div class="hero-grid-right">
           <div class="hero-img">
             <img src="GenAI_4.png" alt="Swasth Mandal" style="width:100%;height:100%;object-fit:cover;display:block">
-          </div>
-          <div class="hero-badge">
-            <div class="hb-lbl">Live Signal</div>
-            <div class="hb-row"><div class="hb-dot"></div><div class="hb-text">Sevika visit confirmed</div></div>
           </div>
         </div>
       </div>
@@ -953,11 +949,12 @@ var track=document.getElementById('ctrack');
 var cards=[].slice.call(track.querySelectorAll('.c-card'));
 var cdots=[].slice.call(document.querySelectorAll('#cdots .c-dot'));
 var cur=0;
-function vis(){return window.innerWidth>960?3:1;}
+var total=cards.length;
 function goTo(n){
-  var max=cards.length-vis();
-  cur=Math.max(0,Math.min(n,max));
-  track.style.transform='translateX(-'+(cur*(cards[0].offsetWidth+20))+'px)';
+  cur=((n%total)+total)%total;
+  var cardW=cards[0].offsetWidth+20;
+  var maxScroll=(total-1)*cardW;
+  track.style.transform='translateX(-'+Math.min(cur*cardW,maxScroll)+'px)';
   cards.forEach(function(c,i){c.classList.toggle('active',i===cur);});
   cdots.forEach(function(d,i){d.classList.toggle('active',i===cur);});
 }
